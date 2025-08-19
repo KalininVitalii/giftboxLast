@@ -553,19 +553,24 @@ const CheckoutPage = () => {
                 <Button 
                   onClick={handleSubmit}
                   disabled={isProcessing}
-                  className="w-full py-3 text-lg font-semibold transition-all duration-200 transform hover:scale-105"
+                  className="w-full py-4 text-lg font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl rounded-xl border-0 relative overflow-hidden group"
                   style={{ 
-                    backgroundColor: 'var(--color--identity--red)',
-                    color: 'var(--text--text-dark)'
+                    background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%)',
+                    color: 'white',
+                    boxShadow: '0 8px 25px rgba(255, 107, 53, 0.3)'
                   }}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 transform -skew-x-12 group-hover:translate-x-full"></div>
                   {isProcessing ? (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Processing...</span>
+                    <div className="flex items-center justify-center space-x-3">
+                      <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span className="font-bold tracking-wide">Processing Payment...</span>
                     </div>
                   ) : (
-                    `Complete Order - $${total.toFixed(2)}`
+                    <div className="flex items-center justify-center space-x-2">
+                      <CreditCard className="w-5 h-5" />
+                      <span className="font-bold tracking-wide">Complete Order - $${total.toFixed(2)}</span>
+                    </div>
                   )}
                 </Button>
 
