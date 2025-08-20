@@ -284,13 +284,13 @@ const GiftBoxCatalog = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredAndSortedProducts.map((product) => (
             <Card 
               key={product.id} 
-              className="group border-0 shadow-none bg-transparent cursor-pointer"
+              className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white border-color--accent--line cursor-pointer"
             >
-              <CardHeader className="p-0 relative overflow-hidden mb-4">
+              <CardHeader className="p-0 relative overflow-hidden">
                 <div className="aspect-square relative">
                   <img 
                     src={product.images[0]} 
@@ -299,19 +299,24 @@ const GiftBoxCatalog = () => {
                     onClick={() => handleProductClick(product.id)}
                   />
                   {product.originalPrice && (
-                    <div className="absolute top-3 left-3 bg-black text-white text-xs px-2 py-1 font-light">
-                      SALE
-                    </div>
+                    <Badge 
+                      className="absolute top-3 left-3 text-white"
+                      style={{ backgroundColor: 'var(--color--identity--red)' }}
+                    >
+                      Save ${(product.originalPrice - product.price).toFixed(0)}
+                    </Badge>
                   )}
                   {product.bestSeller && (
-                    <div className="absolute top-3 right-3 bg-black text-white text-xs px-2 py-1 font-light">
-                      BESTSELLER
-                    </div>
+                    <Badge 
+                      className="absolute top-3 right-3 bg-orange-500 text-white"
+                    >
+                      Best Seller
+                    </Badge>
                   )}
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={`absolute bottom-3 right-3 h-8 w-8 p-0 bg-white/80 hover:bg-white ${
+                    className={`absolute top-12 right-3 h-8 w-8 p-0 bg-white/90 hover:bg-white ${
                       wishlist.includes(product.id) ? 'text-red-500' : 'text-gray-600'
                     }`}
                     onClick={(e) => {
@@ -322,43 +327,78 @@ const GiftBoxCatalog = () => {
                     <Heart className={`h-4 w-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
                   </Button>
                   {!product.inStock && (
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
-                      <span className="text-sm font-light text-gray-600">OUT OF STOCK</span>
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <Badge variant="secondary" className="bg-gray-800 text-white">
+                        Out of Stock
+                      </Badge>
+                    </div>
+                  )}
+                  
+                  {/* Image counter if multiple images */}
+                  {product.images.length > 1 && (
+                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                      1/{product.images.length}
                     </div>
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="p-0 text-center">
-                <h3 className="font-light text-sm mb-2 tracking-wide uppercase" style={{ color: 'var(--text--text-light)' }}>
+              <CardContent className="p-6">
+                <div className="mb-2">
+                  <Badge 
+                    variant="outline" 
+                    className="text-xs"
+                    style={{ borderColor: 'var(--color--accent--line)', color: 'var(--text--text-subtle-light)' }}
+                  >
+                    {product.category}
+                  </Badge>
+                </div>
+                <h3 className="font-semibold text-lg mb-2" style={{ color: 'var(--text--text-light)' }}>
                   {product.name}
                 </h3>
-                <div className="flex items-center justify-center space-x-2 mb-3">
-                  <span className="text-sm font-light" style={{ color: 'var(--text--text-light)' }}>
-                    ${product.price.toFixed(2)}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-xs text-text--text-subtle-light line-through font-light">
-                      ${product.originalPrice.toFixed(2)}
+                <p className="text-sm text-text--text-subtle-light mb-4 line-clamp-2">
+                  {product.description}
+                </p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-2xl font-bold" style={{ color: 'var(--accent--ui-accent)' }}>
+                      ${product.price.toFixed(2)}
                     </span>
-                  )}
+                    {product.originalPrice && (
+                      <span className="text-sm text-text--text-subtle-light line-through">
+                        ${product.originalPrice.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-sm text-text--text-subtle-light">
+                    ⭐ {product.rating} ({product.totalReviews})
+                  </div>
                 </div>
                 
-                {/* Minimalistic Action Button */}
-                <Button 
-                  className="w-full bg-black text-white hover:bg-gray-800 font-light text-xs py-2 rounded-none"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(product);
-                    toast({
-                      title: "Added to Cart",
-                      description: `${product.name} added successfully.`,
-                      variant: "default",
-                    });
-                  }}
-                  disabled={!product.inStock}
-                >
-                  ADD TO BAG
-                </Button>
+                {/* Action Buttons */}
+                <div className="flex space-x-2">
+                  <Button 
+                    className="flex-1"
+                    style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                      toast({
+                        title: "Added to Cart! 🛒",
+                        description: `${product.name} has been added to your cart.`,
+                        variant: "default",
+                      });
+                    }}
+                    disabled={!product.inStock}
+                  >
+                    ADD TO CART
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleProductClick(product.id)}
+                  >
+                    VIEW
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
