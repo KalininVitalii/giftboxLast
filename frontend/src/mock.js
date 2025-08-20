@@ -118,7 +118,21 @@ export const mockReviews = {
       date: "2025-01-20T10:30:00Z",
       verified: true,
       helpful: 12,
-      notHelpful: 0
+      notHelpful: 0,
+      photos: [
+        {
+          id: 1,
+          url: "https://images.unsplash.com/photo-1625552186152-668cd2f0b707?w=400&h=400&fit=crop&crop=center",
+          name: "unboxing-photo.jpg",
+          alt: "Unboxing the elegant rose gold gift box"
+        },
+        {
+          id: 2,
+          url: "https://images.unsplash.com/photo-1647221598091-880219fa2c8f?w=400&h=400&fit=crop&crop=center",
+          name: "contents-photo.jpg", 
+          alt: "Beautiful contents of the gift box"
+        }
+      ]
     },
     {
       id: 2,
