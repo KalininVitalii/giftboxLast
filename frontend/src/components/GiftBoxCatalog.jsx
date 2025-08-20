@@ -406,12 +406,15 @@ const GiftBoxCatalog = () => {
         
         {/* No Results Message */}
         {filteredAndSortedProducts.length === 0 && (
-          <div className="text-center py-20">
-            <h3 className="text-lg font-light mb-4" style={{ color: 'var(--text--text-light)' }}>
+          <div className="text-center py-16">
+            <div className="mb-4">
+              <Filter className="w-16 h-16 mx-auto text-text--text-subtle-light" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>
               No products found
             </h3>
-            <p className="text-text--text-subtle-light mb-8 font-light">
-              Try adjusting your filters or browse all our products.
+            <p className="text-text--text-subtle-light mb-6">
+              Try adjusting your filters or browse all our amazing products.
             </p>
             <Button 
               onClick={() => {
@@ -419,19 +422,112 @@ const GiftBoxCatalog = () => {
                 setPriceFilter('all');
                 setCategoryFilter('all');
               }}
-              className="bg-black text-white hover:bg-gray-800 font-light text-sm py-2 px-6 rounded-none"
+              style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
             >
-              Clear Filters
+              Clear All Filters
             </Button>
           </div>
         )}
 
-        {/* Minimal Footer */}
-        <div className="text-center py-16 border-t border-gray-100 mt-16">
-          <p className="text-xs font-light text-text--text-subtle-light tracking-wide">
-            © 2025 OTTAWA GIFTS. ALL RIGHTS RESERVED.
-          </p>
+        {/* Features Section */}
+        <div className="mt-16 bg-white rounded-lg shadow-lg border border-color--accent--line p-8">
+          <h2 className="text-2xl font-bold text-center mb-8" style={{ color: 'var(--text--text-light)' }}>
+            Why Choose Ottawa Gift Boxes?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--blue)' }}>
+                <span className="text-2xl">🚚</span>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Fast Delivery</h3>
+              <p className="text-sm text-text--text-subtle-light">
+                Same-day delivery available throughout Ottawa and surrounding areas.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--yellow)' }}>
+                <span className="text-2xl">🎁</span>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Premium Quality</h3>
+              <p className="text-sm text-text--text-subtle-light">
+                Carefully curated items from local Ottawa artisans and premium brands.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--cyan)' }}>
+                <span className="text-2xl">💝</span>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Personalized</h3>
+              <p className="text-sm text-text--text-subtle-light">
+                Add custom messages and personalized touches to make every gift special.
+              </p>
+            </div>
+          </div>
         </div>
+
+        {/* Promotional Banner */}
+        <div className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg p-8 text-center text-white">
+          <h2 className="text-2xl font-bold mb-4">Special Offer: Free Delivery on Orders Over $100!</h2>
+          <p className="text-lg mb-6 opacity-90">
+            Treat yourself or someone special with our premium gift boxes. Limited time offer!
+          </p>
+          <Button 
+            className="bg-white text-purple-600 hover:bg-gray-100 font-semibold px-8 py-3"
+            onClick={() => navigate('/corporate-gifts')}
+          >
+            Shop Now
+          </Button>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-surface--background-dark text-text--text-dark py-12 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Ottawa Gift Boxes</h3>
+              <p className="text-text--text-subtle-dark mb-4">
+                Premium gift boxes and baskets delivered fresh throughout Ottawa, Ontario. Perfect for corporate gifts, special occasions, and showing someone you care.
+              </p>
+              <p className="text-sm text-text--text-subtle-dark">
+                Serving Ottawa, Gatineau, Kanata, Orleans, Nepean, and surrounding areas.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-text--text-subtle-dark">
+                <li><a href="#" onClick={() => navigate('/')} className="hover:text-white transition-colors cursor-pointer">Gift Boxes</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Corporate Gifts</a></li>
+                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Same-Day Delivery</a></li>
+                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping Information</a></li>
+                <li><a href="#" onClick={() => navigate('/returns')} className="hover:text-white transition-colors cursor-pointer">Returns & Exchanges</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
+              <ul className="space-y-2 text-text--text-subtle-dark">
+                <li><a href="#" onClick={() => navigate('/contact')} className="hover:text-white transition-colors cursor-pointer">Contact Us</a></li>
+                <li><a href="#" onClick={() => navigate('/faq')} className="hover:text-white transition-colors cursor-pointer">FAQ</a></li>
+                <li><a href="#" onClick={() => navigate('/track-order')} className="hover:text-white transition-colors cursor-pointer">Track Your Order</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-accounts')} className="hover:text-white transition-colors cursor-pointer">Corporate Accounts</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Bulk Orders</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
+              <div className="text-text--text-subtle-dark space-y-2">
+                <p>📧 hello@ottawagiftboxes.ca</p>
+                <p>📞 (613) 555-GIFT (4438)</p>
+                <p>📍 Ottawa, Ontario, Canada</p>
+                <p>🕒 Mon-Fri: 9AM-6PM<br />Sat-Sun: 10AM-4PM</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-color--accent--line text-center text-text--text-subtle-dark">
+            <p>&copy; 2025 Ottawa Gift Boxes. All rights reserved. | Premium gift delivery throughout Ottawa, Ontario</p>
+          </div>
+        </div>
+      </footer>
       </main>
 
       {/* Footer */}
