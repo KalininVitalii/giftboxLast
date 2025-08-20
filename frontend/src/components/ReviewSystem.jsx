@@ -274,6 +274,70 @@ const ReviewForm = ({ productId, onReviewSubmit }) => {
             </div>
           </div>
 
+          {/* Photo Upload Section */}
+          <div>
+            <Label>Add Photos (Optional)</Label>
+            <div className="mt-2 space-y-4">
+              {/* Upload Button */}
+              <div className="flex items-center space-x-4">
+                <input
+                  type="file"
+                  id="photoUpload"
+                  accept="image/*"
+                  multiple
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="photoUpload"
+                  className="flex items-center space-x-2 px-4 py-2 border border-color--accent--line rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
+                >
+                  <Camera className="w-4 h-4" />
+                  <span className="text-sm">Upload Photos</span>
+                </label>
+                <p className="text-xs text-text--text-subtle-light">
+                  Max 5 photos, 5MB each (JPG, PNG, GIF)
+                </p>
+              </div>
+
+              {/* Photo Previews */}
+              {photos.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-text--text-light mb-2">
+                    Photos ({photos.length}/5)
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    {photos.map((photo) => (
+                      <div key={photo.id} className="relative group">
+                        <div className="aspect-square rounded-lg overflow-hidden border border-color--accent--line">
+                          <img
+                            src={photo.preview}
+                            alt="Review photo preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removePhoto(photo.id)}
+                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs p-1 truncate opacity-0 group-hover:opacity-100 transition-opacity">
+                          {photo.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs text-text--text-subtle-light">
+                📸 Photos help other customers see how the products look in real life. Please only upload photos related to your purchase.
+              </p>
+            </div>
+          </div>
+
           {/* Submit Button */}
           <Button 
             type="submit"
