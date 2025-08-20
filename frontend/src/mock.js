@@ -17,7 +17,8 @@ export const mockProducts = [
     inStock: true,
     rating: 4.9,
     totalReviews: 127,
-    featured: true
+    featured: true,
+    bestSeller: false
   },
   {
     id: 2,
@@ -34,7 +35,8 @@ export const mockProducts = [
     inStock: true,
     rating: 4.7,
     totalReviews: 89,
-    featured: false
+    featured: false,
+    bestSeller: true
   },
   {
     id: 3,
@@ -50,7 +52,8 @@ export const mockProducts = [
     inStock: true,
     rating: 4.8,
     totalReviews: 73,
-    featured: false
+    featured: false,
+    bestSeller: false
   },
   {
     id: 4,
@@ -67,7 +70,8 @@ export const mockProducts = [
     inStock: true,
     rating: 4.9,
     totalReviews: 156,
-    featured: true
+    featured: true,
+    bestSeller: false
   },
   {
     id: 5,
@@ -83,7 +87,8 @@ export const mockProducts = [
     inStock: false,
     rating: 5.0,
     totalReviews: 45,
-    featured: true
+    featured: true,
+    bestSeller: false
   },
   {
     id: 6,
@@ -100,7 +105,179 @@ export const mockProducts = [
     inStock: true,
     rating: 4.6,
     totalReviews: 98,
-    featured: false
+    featured: false,
+    bestSeller: false
+  },
+  // NEW PRODUCTS ADDED
+  {
+    id: 7,
+    name: "Canadian Breakfast Box",
+    price: 32.00,
+    originalPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1581701391276-63c3bcef7036?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "A delightful Canadian breakfast experience featuring maple syrup, artisanal pancake mix, premium coffee beans, and local honey. Perfect for breakfast lovers and anyone wanting to experience true Canadian flavors.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.5,
+    totalReviews: 132,
+    featured: false,
+    bestSeller: true
+  },
+  {
+    id: 8,
+    name: "Spa Day Relaxation",
+    price: 100.00,
+    originalPrice: 125.00,
+    images: [
+      "https://images.unsplash.com/photo-1556909114-4ba7e6d49b97?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Indulge in the ultimate relaxation experience with luxury bath salts, essential oils, scented candles, and premium skincare products. Transform any home into a personal spa retreat.",
+    category: "Wellness",
+    inStock: true,
+    rating: 4.8,
+    totalReviews: 246,
+    featured: true,
+    bestSeller: true
+  },
+  {
+    id: 9,
+    name: "BBQ Sizzler Set",
+    price: 108.00,
+    originalPrice: 135.00,
+    images: [
+      "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Fire up the grill with this comprehensive BBQ collection! Includes premium spice rubs, gourmet sauces, grilling tools, and specialty marinades. Perfect for the BBQ enthusiast in your life.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.6,
+    totalReviews: 189,
+    featured: false,
+    bestSeller: false
+  },
+  {
+    id: 10,
+    name: "My Moment Basket",
+    price: 28.00,
+    originalPrice: 35.00,
+    images: [
+      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "A personal self-care collection designed for those precious me-time moments. Features herbal teas, cozy accessories, inspirational books, and comfort treats for ultimate relaxation.",
+    category: "Lifestyle",
+    inStock: true,
+    rating: 4.4,
+    totalReviews: 95,
+    featured: false,
+    bestSeller: false
+  },
+  {
+    id: 11,
+    name: "Coffee Connoisseur Collection",
+    price: 78.00,
+    originalPrice: 95.00,
+    images: [
+      "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Premium coffee experience with single-origin beans, artisan roasts, specialty brewing equipment, and gourmet accompaniments. A perfect gift for coffee aficionados.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.7,
+    totalReviews: 203,
+    featured: false,
+    bestSeller: true
+  },
+  {
+    id: 12,
+    name: "Artisan Chocolate Paradise",
+    price: 68.00,
+    originalPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1511381939415-e44015466834?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1549210545-ca3f9e7b5e9a?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Indulge in handcrafted chocolates from local Ottawa chocolatiers. Features dark, milk, and white chocolate varieties, truffles, and unique flavor combinations that will delight any chocolate lover.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.9,
+    totalReviews: 167,
+    featured: true,
+    bestSeller: false
+  },
+  {
+    id: 13,
+    name: "Wine & Cheese Connoisseur",
+    price: 125.00,
+    originalPrice: 155.00,
+    images: [
+      "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1574873215628-43ea19e05bf6?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Sophisticated pairing of premium wines with artisanal cheeses, crackers, and accompaniments. Perfect for wine enthusiasts and romantic occasions.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.8,
+    totalReviews: 134,
+    featured: false,
+    bestSeller: false
+  },
+  {
+    id: 14,
+    name: "New Mom Care Package",
+    price: 85.00,
+    originalPrice: 110.00,
+    images: [
+      "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Thoughtfully curated care package for new mothers featuring comfort items, wellness products, healthy snacks, and pampering essentials to support during this special time.",
+    category: "Wellness",
+    inStock: true,
+    rating: 4.7,
+    totalReviews: 78,
+    featured: false,
+    bestSeller: false
+  },
+  {
+    id: 15,
+    name: "Gourmet Tea Experience",
+    price: 48.00,
+    originalPrice: 62.00,
+    images: [
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Discover the world of premium teas with this curated selection of loose-leaf varieties, tea accessories, honey, and brewing guides. Perfect for tea enthusiasts and meditation moments.",
+    category: "Food & Beverage",
+    inStock: true,
+    rating: 4.6,
+    totalReviews: 112,
+    featured: false,
+    bestSeller: false
+  },
+  {
+    id: 16,
+    name: "Game Night Champions",
+    price: 72.00,
+    originalPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=500&h=500&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1611694440675-96c9b8dc59bb?w=500&h=500&fit=crop&crop=center"
+    ],
+    description: "Everything needed for the perfect game night including board games, card games, premium snacks, and fun accessories. Great for families, friends, and entertainment lovers.",
+    category: "Lifestyle",
+    inStock: true,
+    rating: 4.5,
+    totalReviews: 89,
+    featured: false,
+    bestSeller: false
   }
 ];
 
