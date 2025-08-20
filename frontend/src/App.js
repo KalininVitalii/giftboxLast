@@ -5,6 +5,13 @@ import GiftBoxCatalog from "./components/GiftBoxCatalog";
 import ProductPage from "./components/ProductPage";
 import CheckoutPage from "./components/CheckoutPage";
 import ContactPage from "./components/ContactPage";
+import AboutPage from "./components/AboutPage";
+import GiftBasketsPage from "./components/GiftBasketsPage";
+import CorporateGiftsPage from "./components/CorporateGiftsPage";
+import FAQPage from "./components/FAQPage";
+import ShippingPage from "./components/ShippingPage";
+import TrackOrderPage from "./components/TrackOrderPage";
+import ReturnsPage from "./components/ReturnsPage";
 import { Toaster } from "./components/ui/toaster";
 import { CartProvider } from "./components/CartContext";
 
@@ -143,6 +150,14 @@ function App() {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/gift-baskets" element={<GiftBasketsPage />} />
+            <Route path="/corporate-gifts" element={<CorporateGiftsPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/shipping" element={<ShippingPage />} />
+            <Route path="/track-order" element={<TrackOrderPage />} />
+            <Route path="/returns" element={<ReturnsPage />} />
+            <Route path="/corporate-accounts" element={<CorporateGiftsPage />} />
           </Routes>
         </BrowserRouter>
         <Toaster />
