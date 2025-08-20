@@ -58,6 +58,68 @@ const GiftBoxCatalog = () => {
     navigate(`/product/${productId}`);
   };
 
+  // Filtered and sorted products
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...mockProducts];
+
+    // Apply price filter
+    if (priceFilter !== 'all') {
+      const [min, max] = priceFilter.split('-').map(Number);
+      filtered = filtered.filter(product => {
+        if (max) {
+          return product.price >= min && product.price <= max;
+        } else {
+          return product.price >= min;
+        }
+      });
+    }
+
+    // Apply category filter
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(product => 
+        product.category.toLowerCase() === categoryFilter.toLowerCase()
+      );
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case 'bestSelling':
+        filtered.sort((a, b) => {
+          if (a.bestSeller && !b.bestSeller) return -1;
+          if (!a.bestSeller && b.bestSeller) return 1;
+          return b.totalReviews - a.totalReviews;
+        });
+        break;
+      case 'priceLow':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'priceHigh':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+        filtered.sort((a, b) => b.id - a.id);
+        break;
+      case 'name':
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'featured':
+      default:
+        filtered.sort((a, b) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return 0;
+        });
+        break;
+    }
+
+    return filtered;
+  }, [sortBy, priceFilter, categoryFilter]);
+
+  const categories = [...new Set(mockProducts.map(product => product.category))];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
       {/* Header */}
