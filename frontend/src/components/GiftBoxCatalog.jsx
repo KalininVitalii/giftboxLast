@@ -312,21 +312,21 @@ const GiftBoxCatalog = () => {
             <div>
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" className="hover:text-white transition-colors">Gift Boxes</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Corporate Gifts</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Same-Day Delivery</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Shipping Information</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Returns & Exchanges</a></li>
+                <li><a href="#" onClick={() => navigate('/')} className="hover:text-white transition-colors cursor-pointer">Gift Boxes</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Corporate Gifts</a></li>
+                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Same-Day Delivery</a></li>
+                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping Information</a></li>
+                <li><a href="#" onClick={() => navigate('/returns')} className="hover:text-white transition-colors cursor-pointer">Returns & Exchanges</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
               <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Track Your Order</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Corporate Accounts</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Bulk Orders</a></li>
+                <li><a href="#" onClick={() => navigate('/contact')} className="hover:text-white transition-colors cursor-pointer">Contact Us</a></li>
+                <li><a href="#" onClick={() => navigate('/faq')} className="hover:text-white transition-colors cursor-pointer">FAQ</a></li>
+                <li><a href="#" onClick={() => navigate('/track-order')} className="hover:text-white transition-colors cursor-pointer">Track Your Order</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-accounts')} className="hover:text-white transition-colors cursor-pointer">Corporate Accounts</a></li>
+                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Bulk Orders</a></li>
               </ul>
             </div>
             <div>
