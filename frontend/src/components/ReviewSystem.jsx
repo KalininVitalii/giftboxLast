@@ -175,6 +175,7 @@ const ReviewForm = ({ productId, onReviewSubmit }) => {
         email: '',
         verified: false
       });
+      setPhotos([]);
       
     } catch (error) {
       toast({
