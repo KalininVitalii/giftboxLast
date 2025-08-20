@@ -333,7 +333,7 @@ const GiftBoxCatalog = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {mockProducts.map((product) => (
+          {filteredAndSortedProducts.map((product) => (
             <Card 
               key={product.id} 
               className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white border-color--accent--line cursor-pointer"
