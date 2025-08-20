@@ -123,18 +123,16 @@ const GiftBoxCatalog = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
+            {/* Mobile Navigation */}
             <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Shop</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Gift Baskets</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Corporate Gifts</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">About Us</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Contact</a>
+                <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold">Shop</a>
+                <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
+                <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Corporate Gifts</a>
+                <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">About Us</a>
+                <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
               </nav>
             </div>
-          )}
         </div>
       </header>
 
