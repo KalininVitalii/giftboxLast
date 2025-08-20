@@ -123,51 +123,56 @@ const GiftBoxCatalog = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-sm border-b border-gray-100">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-color--accent--line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
               <h1 
-                className="text-xl font-light tracking-wider cursor-pointer" 
-                style={{ color: 'var(--text--text-light)', fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' }}
+                className="text-2xl font-bold cursor-pointer" 
+                style={{ color: 'var(--accent--ui-accent)', fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' }}
                 onClick={() => navigate('/')}
               >
-                OTTAWA GIFTS
+                Ottawa Gift Boxes
               </h1>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-12">
-              <a href="#" onClick={() => navigate('/')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">SHOP</a>
-              <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">BASKETS</a>
-              <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">CORPORATE</a>
-              <a href="#" onClick={() => navigate('/about')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">ABOUT</a>
-              <a href="#" onClick={() => navigate('/contact')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">CONTACT</a>
+            <nav className="hidden md:flex space-x-8">
+              <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer font-semibold">Shop</a>
+              <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</a>
+              <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</a>
+              <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</a>
+              <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</a>
             </nav>
 
             {/* Header Actions */}
-            <div className="flex items-center space-x-6">
-              <Button variant="ghost" size="sm" className="hover:bg-transparent p-0">
-                <Search className="h-4 w-4 text-text--text-light" />
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="sm">
+                <Search className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" className="relative hover:bg-transparent p-0">
-                <Heart className={`h-4 w-4 text-text--text-light ${wishlist.length > 0 ? 'fill-current text-red-500' : ''}`} />
+              <Button variant="ghost" size="sm" className="relative">
+                <Heart className={`h-4 w-4 ${wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+                {wishlist.length > 0 && (
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500">
+                    {wishlist.length}
+                  </Badge>
+                )}
               </Button>
-              <Button variant="ghost" size="sm" className="hover:bg-transparent p-0">
-                <User className="h-4 w-4 text-text--text-light" />
+              <Button variant="ghost" size="sm">
+                <User className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="relative hover:bg-transparent p-0"
+                className="relative"
                 onClick={() => setIsCartOpen(true)}
               >
-                <ShoppingCart className="h-4 w-4 text-text--text-light" />
+                <ShoppingCart className="h-4 w-4" />
                 {getCartItemCount() > 0 && (
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-black text-white text-xs rounded-full flex items-center justify-center">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs" style={{ backgroundColor: 'var(--color--identity--red)' }}>
                     {getCartItemCount()}
-                  </div>
+                  </Badge>
                 )}
               </Button>
               
@@ -175,23 +180,23 @@ const GiftBoxCatalog = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="md:hidden hover:bg-transparent p-0"
+                className="md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
-                {isMenuOpen ? <X className="h-4 w-4 text-text--text-light" /> : <Menu className="h-4 w-4 text-text--text-light" />}
+                {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
             </div>
           </div>
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden py-6 border-t border-gray-100">
-              <nav className="flex flex-col space-y-4">
-                <a href="#" onClick={() => navigate('/')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">SHOP</a>
-                <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">BASKETS</a>
-                <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">CORPORATE</a>
-                <a href="#" onClick={() => navigate('/about')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">ABOUT</a>
-                <a href="#" onClick={() => navigate('/contact')} className="text-text--text-light hover:text-gray-600 transition-colors duration-200 cursor-pointer font-light text-sm tracking-wide">CONTACT</a>
+            <div className="md:hidden py-4 border-t border-color--accent--line">
+              <nav className="flex flex-col space-y-2">
+                <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold">Shop</a>
+                <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
+                <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Corporate Gifts</a>
+                <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">About Us</a>
+                <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
               </nav>
             </div>
           )}
