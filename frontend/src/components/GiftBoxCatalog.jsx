@@ -125,6 +125,7 @@ const GiftBoxCatalog = () => {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
+            <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
                 <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold">Shop</a>
                 <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
@@ -133,6 +134,7 @@ const GiftBoxCatalog = () => {
                 <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
               </nav>
             </div>
+          )}
         </div>
       </header>
 
