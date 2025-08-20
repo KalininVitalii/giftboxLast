@@ -58,6 +58,63 @@ const ReviewForm = ({ productId, onReviewSubmit }) => {
     }
   };
 
+  const handlePhotoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const maxPhotos = 5;
+    const maxFileSize = 5 * 1024 * 1024; // 5MB per file
+    
+    if (photos.length + files.length > maxPhotos) {
+      toast({
+        title: "Too Many Photos",
+        description: `You can only upload up to ${maxPhotos} photos per review.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const validFiles = files.filter(file => {
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please only upload image files (JPG, PNG, GIF, etc.)",
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      if (file.size > maxFileSize) {
+        toast({
+          title: "File Too Large",
+          description: `${file.name} is too large. Please upload files smaller than 5MB.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      return true;
+    });
+
+    // Convert files to base64 for preview and storage
+    validFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newPhoto = {
+          id: Date.now() + Math.random(),
+          file: file,
+          preview: e.target.result,
+          name: file.name,
+          size: file.size
+        };
+        setPhotos(prev => [...prev, newPhoto]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removePhoto = (photoId) => {
+    setPhotos(prev => prev.filter(photo => photo.id !== photoId));
+  };
+
   const validateForm = () => {
     const newErrors = {};
     
