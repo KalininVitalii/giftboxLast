@@ -251,7 +251,27 @@ export const mockReviews = {
       date: "2025-01-21T15:45:00Z",
       verified: true,
       helpful: 14,
-      notHelpful: 0
+      notHelpful: 0,
+      photos: [
+        {
+          id: 6,
+          url: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center",
+          name: "jewelry-pieces.jpg",
+          alt: "Beautiful jewelry pieces from the luxury collection"
+        },
+        {
+          id: 7,
+          url: "https://images.unsplash.com/photo-1674620213535-9b2a2553ef40?w=400&h=400&fit=crop&crop=center",
+          name: "velvet-boxes.jpg",
+          alt: "Elegant velvet presentation boxes"
+        },
+        {
+          id: 8,
+          url: "https://images.unsplash.com/photo-1732532973406-0a82b447739c?w=400&h=400&fit=crop&crop=center",
+          name: "wearing-necklace.jpg",
+          alt: "Wife wearing the beautiful necklace"
+        }
+      ]
     },
     {
       id: 9,
