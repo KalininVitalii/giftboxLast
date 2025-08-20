@@ -69,11 +69,11 @@ const GiftBoxCatalog = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Shop</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Gift Baskets</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Corporate Gifts</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">About Us</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Contact</a>
+              <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer font-semibold">Shop</a>
+              <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</a>
+              <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</a>
+              <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</a>
+              <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</a>
             </nav>
 
             {/* Header Actions */}
