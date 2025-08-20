@@ -47,6 +47,7 @@ const ReviewForm = ({ productId, onReviewSubmit }) => {
     email: '',
     verified: false
   });
+  const [photos, setPhotos] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
