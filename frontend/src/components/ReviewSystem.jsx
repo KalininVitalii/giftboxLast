@@ -149,7 +149,13 @@ const ReviewForm = ({ productId, onReviewSubmit }) => {
         date: new Date().toISOString(),
         verified: Math.random() > 0.3, // 70% chance of verified purchase
         helpful: Math.floor(Math.random() * 15),
-        notHelpful: Math.floor(Math.random() * 3)
+        notHelpful: Math.floor(Math.random() * 3),
+        photos: photos.map(photo => ({
+          id: photo.id,
+          url: photo.preview, // In real app, this would be uploaded to server
+          name: photo.name,
+          alt: `Review photo by ${formData.name}`
+        }))
       };
       
       onReviewSubmit(newReview);
