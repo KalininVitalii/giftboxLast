@@ -7,9 +7,10 @@ import { Badge } from './ui/badge';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { useToast } from '../hooks/use-toast';
-import { mockProducts } from '../mock';
+import { mockProducts, mockReviews } from '../mock';
 import { useCart } from './CartContext';
 import CartModal from './CartModal';
+import { StarRating, ReviewForm, ReviewsList, ReviewSummary } from './ReviewSystem';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const ProductPage = () => {
   const { toast } = useToast();
   const { cart, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart();
   const [product, setProduct] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [giftMessage, setGiftMessage] = useState('');
@@ -27,11 +29,15 @@ const ProductPage = () => {
   const [wishlist, setWishlist] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('details');
 
   useEffect(() => {
     const foundProduct = mockProducts.find(p => p.id === parseInt(id));
     if (foundProduct) {
       setProduct(foundProduct);
+      // Load reviews for this product
+      setReviews(mockReviews[parseInt(id)] || []);
+      
       // Set SEO meta tags
       document.title = `${foundProduct.name} - Ottawa Gift Boxes | Premium Gift Baskets Ottawa`;
       const metaDescription = document.querySelector('meta[name="description"]');
@@ -137,6 +143,25 @@ const ProductPage = () => {
     }, 3000);
   };
 
+  const handleReviewSubmit = (newReview) => {
+    setReviews(prev => [newReview, ...prev]);
+    // Update product rating
+    const allReviews = [newReview, ...reviews];
+    const avgRating = allReviews.reduce((sum, review) => sum + review.rating, 0) / allReviews.length;
+    setProduct(prev => ({ ...prev, rating: avgRating, totalReviews: allReviews.length }));
+  };
+
+  const handleHelpfulClick = (reviewId, isHelpful) => {
+    setReviews(prev => prev.map(review => 
+      review.id === reviewId 
+        ? { 
+            ...review, 
+            [isHelpful ? 'helpful' : 'notHelpful']: review[isHelpful ? 'helpful' : 'notHelpful'] + 1 
+          }
+        : review
+    ));
+  };
+
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white flex items-center justify-center">
@@ -149,7 +174,11 @@ const ProductPage = () => {
         </div>
       </div>
     );
-  };
+  }
+
+  const averageRating = reviews.length > 0 
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
+    : product.rating;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
@@ -255,7 +284,7 @@ const ProductPage = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
           <div className="space-y-4">
             <div className="relative aspect-square bg-white rounded-lg shadow-lg overflow-hidden">
@@ -369,9 +398,11 @@ const ProductPage = () => {
                   )}
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-medium">{product.rating}</span>
-                  <span className="text-sm text-text--text-subtle-light">(127 reviews)</span>
+                  <StarRating rating={Math.round(averageRating)} readonly size="md" />
+                  <span className="text-sm font-medium">{averageRating.toFixed(1)}</span>
+                  <span className="text-sm text-text--text-subtle-light">
+                    ({reviews.length} review{reviews.length !== 1 ? 's' : ''})
+                  </span>
                 </div>
               </div>
               
@@ -530,7 +561,110 @@ const ProductPage = () => {
             </Card>
           </div>
         </div>
+
+        {/* Tabs Navigation */}
+        <div className="border-b border-color--accent--line mb-8">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('details')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'details'
+                  ? 'border-accent--ui-accent text-accent--ui-accent'
+                  : 'border-transparent text-text--text-subtle-light hover:text-text--text-light hover:border-gray-300'
+              }`}
+            >
+              Product Details
+            </button>
+            <button
+              onClick={() => setActiveTab('reviews')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'reviews'
+                  ? 'border-accent--ui-accent text-accent--ui-accent'
+                  : 'border-transparent text-text--text-subtle-light hover:text-text--text-light hover:border-gray-300'
+              }`}
+            >
+              Reviews ({reviews.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('write-review')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'write-review'
+                  ? 'border-accent--ui-accent text-accent--ui-accent'
+                  : 'border-transparent text-text--text-subtle-light hover:text-text--text-light hover:border-gray-300'
+              }`}
+            >
+              Write Review
+            </button>
+          </nav>
+        </div>
+
+        {/* Tab Content */}
+        <div className="tab-content">
+          {activeTab === 'details' && (
+            <Card className="border-color--accent--line">
+              <CardContent className="p-8">
+                <div className="prose max-w-none">
+                  <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text--text-light)' }}>
+                    Product Details
+                  </h3>
+                  <p className="text-text--text-subtle-light leading-relaxed mb-6">
+                    {product.description}
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="font-semibold mb-3" style={{ color: 'var(--text--text-light)' }}>
+                        What's Included
+                      </h4>
+                      <ul className="space-y-2 text-text--text-subtle-light">
+                        <li>• Premium gift items carefully curated by our team</li>
+                        <li>• Beautiful presentation packaging</li>
+                        <li>• Personalized greeting card with your message</li>
+                        <li>• Eco-friendly protective materials</li>
+                        <li>• Care instructions for delicate items</li>
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold mb-3" style={{ color: 'var(--text--text-light)' }}>
+                        Perfect For
+                      </h4>
+                      <ul className="space-y-2 text-text--text-subtle-light">
+                        <li>• Birthday celebrations</li>
+                        <li>• Anniversaries and special occasions</li>
+                        <li>• Thank you gifts</li>
+                        <li>• Corporate appreciation</li>
+                        <li>• Holiday gifting</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === 'reviews' && (
+            <div>
+              <ReviewSummary reviews={reviews} averageRating={averageRating} />
+              <ReviewsList reviews={reviews} onHelpfulClick={handleHelpfulClick} />
+            </div>
+          )}
+
+          {activeTab === 'write-review' && (
+            <ReviewForm productId={product.id} onReviewSubmit={handleReviewSubmit} />
+          )}
+        </div>
       </main>
+
+      {/* Cart Modal */}
+      <CartModal 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cart}
+        updateQuantity={updateQuantity}
+        removeFromCart={removeFromCart}
+        onCheckout={handleCheckout}
+      />
     </div>
   );
 };
