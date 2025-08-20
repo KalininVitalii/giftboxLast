@@ -337,7 +337,6 @@ const GiftBoxCatalog = () => {
             <Card 
               key={product.id} 
               className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white border-color--accent--line cursor-pointer"
-              onClick={() => handleProductClick(product.id)}
             >
               <CardHeader className="p-0 relative overflow-hidden">
                 <div className="aspect-square relative">
@@ -354,10 +353,17 @@ const GiftBoxCatalog = () => {
                       Save ${(product.originalPrice - product.price).toFixed(0)}
                     </Badge>
                   )}
+                  {product.bestSeller && (
+                    <Badge 
+                      className="absolute top-3 right-3 bg-orange-500 text-white"
+                    >
+                      Best Seller
+                    </Badge>
+                  )}
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={`absolute top-3 right-3 h-8 w-8 p-0 bg-white/90 hover:bg-white ${
+                    className={`absolute top-12 right-3 h-8 w-8 p-0 bg-white/90 hover:bg-white ${
                       wishlist.includes(product.id) ? 'text-red-500' : 'text-gray-600'
                     }`}
                     onClick={(e) => {
@@ -372,13 +378,6 @@ const GiftBoxCatalog = () => {
                       <Badge variant="secondary" className="bg-gray-800 text-white">
                         Out of Stock
                       </Badge>
-                    </div>
-                  )}
-                  
-                  {/* Image counter if multiple images */}
-                  {product.images.length > 1 && (
-                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                      1/{product.images.length}
                     </div>
                   )}
                 </div>
@@ -399,7 +398,7 @@ const GiftBoxCatalog = () => {
                 <p className="text-sm text-text--text-subtle-light mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-2xl font-bold" style={{ color: 'var(--accent--ui-accent)' }}>
                       ${product.price.toFixed(2)}
@@ -411,16 +410,64 @@ const GiftBoxCatalog = () => {
                     )}
                   </div>
                   <div className="text-sm text-text--text-subtle-light">
-                    ⭐ {product.rating}
+                    ⭐ {product.rating} ({product.totalReviews})
                   </div>
                 </div>
-                <div className="mt-4 text-xs text-text--text-subtle-light text-center">
-                  Click to view details & customize
+                
+                {/* Action Buttons */}
+                <div className="flex space-x-2">
+                  <Button 
+                    className="flex-1"
+                    style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                      toast({
+                        title: "Added to Cart! 🛒",
+                        description: `${product.name} has been added to your cart.`,
+                        variant: "default",
+                      });
+                    }}
+                    disabled={!product.inStock}
+                  >
+                    ADD TO CART
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleProductClick(product.id)}
+                  >
+                    VIEW
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
+        
+        {/* No Results Message */}
+        {filteredAndSortedProducts.length === 0 && (
+          <div className="text-center py-16">
+            <div className="mb-4">
+              <Filter className="w-16 h-16 mx-auto text-text--text-subtle-light" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>
+              No products found
+            </h3>
+            <p className="text-text--text-subtle-light mb-6">
+              Try adjusting your filters or browse all our amazing products.
+            </p>
+            <Button 
+              onClick={() => {
+                setSortBy('featured');
+                setPriceFilter('all');
+                setCategoryFilter('all');
+              }}
+              style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
+            >
+              Clear All Filters
+            </Button>
+          </div>
+        )}
 
         {/* Features Section */}
         <div className="mt-16 bg-white rounded-lg shadow-lg border border-color--accent--line p-8">
