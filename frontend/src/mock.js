@@ -145,7 +145,15 @@ export const mockReviews = {
       date: "2025-01-18T14:45:00Z",
       verified: true,
       helpful: 8,
-      notHelpful: 1
+      notHelpful: 1,
+      photos: [
+        {
+          id: 3,
+          url: "https://images.unsplash.com/photo-1674620213535-9b2a2553ef40?w=400&h=400&fit=crop&crop=center",
+          name: "anniversary-gift.jpg",
+          alt: "Anniversary gift presentation"
+        }
+      ]
     },
     {
       id: 3,
