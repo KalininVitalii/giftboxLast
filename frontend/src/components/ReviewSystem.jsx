@@ -488,7 +488,59 @@ const ReviewsList = ({ reviews, onHelpfulClick }) => {
 
                 <div className="mb-4">
                   <h5 className="font-semibold text-text--text-light mb-2">{review.title}</h5>
-                  <p className="text-text--text-subtle-light leading-relaxed">{review.review}</p>
+                  <p className="text-text--text-subtle-light leading-relaxed mb-4">{review.review}</p>
+                  
+                  {/* Review Photos */}
+                  {review.photos && review.photos.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-sm font-medium text-text--text-light mb-2">
+                        Photos from this review ({review.photos.length})
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                        {review.photos.map((photo) => (
+                          <div key={photo.id} className="relative group cursor-pointer">
+                            <div className="aspect-square rounded-lg overflow-hidden border border-color--accent--line hover:shadow-lg transition-shadow">
+                              <img
+                                src={photo.url}
+                                alt={photo.alt || `Review photo by ${review.reviewerName}`}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                onClick={() => {
+                                  // Create modal overlay to show full-size image
+                                  const modal = document.createElement('div');
+                                  modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+                                  modal.innerHTML = `
+                                    <div class="relative max-w-4xl max-h-full">
+                                      <img src="${photo.url}" alt="${photo.alt}" class="max-w-full max-h-full object-contain rounded-lg" />
+                                      <button class="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  `;
+                                  document.body.appendChild(modal);
+                                  
+                                  // Close modal on click
+                                  modal.addEventListener('click', (e) => {
+                                    if (e.target === modal || e.target.closest('button')) {
+                                      document.body.removeChild(modal);
+                                    }
+                                  });
+                                }}
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 rounded-lg flex items-center justify-center">
+                              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                  <Image className="w-4 h-4 text-gray-600" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Helpful buttons */}
