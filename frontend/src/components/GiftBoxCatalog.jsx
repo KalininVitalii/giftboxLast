@@ -528,56 +528,6 @@ const GiftBoxCatalog = () => {
           </div>
         </div>
       </footer>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-surface--background-dark text-text--text-dark py-12 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Ottawa Gift Boxes</h3>
-              <p className="text-text--text-subtle-dark mb-4">
-                Premium gift boxes and baskets delivered fresh throughout Ottawa, Ontario. Perfect for corporate gifts, special occasions, and showing someone you care.
-              </p>
-              <p className="text-sm text-text--text-subtle-dark">
-                Serving Ottawa, Gatineau, Kanata, Orleans, Nepean, and surrounding areas.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" onClick={() => navigate('/')} className="hover:text-white transition-colors cursor-pointer">Gift Boxes</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Corporate Gifts</a></li>
-                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Same-Day Delivery</a></li>
-                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping Information</a></li>
-                <li><a href="#" onClick={() => navigate('/returns')} className="hover:text-white transition-colors cursor-pointer">Returns & Exchanges</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
-              <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" onClick={() => navigate('/contact')} className="hover:text-white transition-colors cursor-pointer">Contact Us</a></li>
-                <li><a href="#" onClick={() => navigate('/faq')} className="hover:text-white transition-colors cursor-pointer">FAQ</a></li>
-                <li><a href="#" onClick={() => navigate('/track-order')} className="hover:text-white transition-colors cursor-pointer">Track Your Order</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-accounts')} className="hover:text-white transition-colors cursor-pointer">Corporate Accounts</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Bulk Orders</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
-              <div className="text-text--text-subtle-dark space-y-2">
-                <p>📧 hello@ottawagiftboxes.ca</p>
-                <p>📞 (613) 555-GIFT (4438)</p>
-                <p>📍 Ottawa, Ontario, Canada</p>
-                <p>🕒 Mon-Fri: 9AM-6PM<br />Sat-Sun: 10AM-4PM</p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-color--accent--line text-center text-text--text-subtle-dark">
-            <p>&copy; 2025 Ottawa Gift Boxes. All rights reserved. | Premium gift delivery throughout Ottawa, Ontario</p>
-          </div>
-        </div>
-      </footer>
 
       {/* Cart Modal */}
       <CartModal 
