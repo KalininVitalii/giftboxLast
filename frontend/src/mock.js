@@ -194,7 +194,21 @@ export const mockReviews = {
       date: "2025-01-19T11:00:00Z",
       verified: true,
       helpful: 7,
-      notHelpful: 0
+      notHelpful: 0,
+      photos: [
+        {
+          id: 4,
+          url: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=400&h=400&fit=crop&crop=center",
+          name: "graduation-celebration.jpg",
+          alt: "Golden celebration box for graduation"
+        },
+        {
+          id: 5,
+          url: "https://images.unsplash.com/photo-1702410448780-cbe62c82d55a?w=400&h=400&fit=crop&crop=center",
+          name: "inside-contents.jpg",
+          alt: "Contents of the golden celebration box"
+        }
+      ]
     },
     {
       id: 6,
