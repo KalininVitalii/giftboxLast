@@ -14,6 +14,9 @@ const GiftBoxCatalog = () => {
   const [wishlist, setWishlist] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [sortBy, setSortBy] = useState('featured');
+  const [priceFilter, setPriceFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const navigate = useNavigate();
   const { toast } = useToast();
   const { cart, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart();
