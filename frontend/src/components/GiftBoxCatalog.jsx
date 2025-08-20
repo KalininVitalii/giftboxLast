@@ -206,53 +206,80 @@ const GiftBoxCatalog = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl font-light mb-6 tracking-wide" style={{ 
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold mb-4" style={{ 
             color: 'var(--text--text-light)', 
-            fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif',
-            fontWeight: '300'
+            fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' 
           }}>
-            all GIFTS
+            Premium Gift Boxes
           </h1>
-          <p className="text-base text-text--text-subtle-light max-w-lg mx-auto mb-12 font-light">
-            A curated collection for every emotion.
+          <p className="text-lg text-text--text-subtle-light max-w-2xl mx-auto mb-8">
+            Thoughtfully curated gift boxes delivered fresh throughout Ottawa, Ontario. Same-day delivery available for that perfect last-minute gift!
           </p>
         </div>
 
-        {/* Minimalistic Sort Controls */}
-        <div className="flex justify-center items-center space-x-8 mb-16">
-          <div className="flex items-center space-x-3">
-            <span className="text-sm font-light text-text--text-subtle-light">Sort by:</span>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="border-0 bg-transparent text-sm font-light shadow-none focus:ring-0 px-0">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="featured">Featured Items</SelectItem>
-                <SelectItem value="bestSelling">Best Selling</SelectItem>
-                <SelectItem value="newest">Newest Items</SelectItem>
-                <SelectItem value="priceLow">Price: Ascending</SelectItem>
-                <SelectItem value="priceHigh">Price: Descending</SelectItem>
-                <SelectItem value="name">A to Z</SelectItem>
-                <SelectItem value="rating">Z to A</SelectItem>
-              </SelectContent>
-            </Select>
+        {/* Compact Filters and Sort Section */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-color--accent--line">
+          {/* Results Info */}
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-text--text-subtle-light">
+              {filteredAndSortedProducts.length} products
+            </span>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <span className="text-sm font-light text-text--text-subtle-light">Filter by Price:</span>
-            <Select value={priceFilter} onValueChange={setPriceFilter}>
-              <SelectTrigger className="border-0 bg-transparent text-sm font-light shadow-none focus:ring-0 px-0">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Prices</SelectItem>
-                <SelectItem value="0-50">Under $50</SelectItem>
-                <SelectItem value="50-100">$50 - $100</SelectItem>
-                <SelectItem value="100-150">$100 - $150</SelectItem>
-                <SelectItem value="150">$150+</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Compact Filter Controls */}
+          <div className="flex items-center space-x-6">
+            {/* Sort By */}
+            <div className="flex items-center space-x-2">
+              <label className="text-sm text-text--text-subtle-light">Sort:</label>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="h-8 text-sm border-gray-300 min-w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured</SelectItem>
+                  <SelectItem value="bestSelling">Best Selling</SelectItem>
+                  <SelectItem value="priceLow">Price: Low to High</SelectItem>
+                  <SelectItem value="priceHigh">Price: High to Low</SelectItem>
+                  <SelectItem value="rating">Customer Rating</SelectItem>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">Name A-Z</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Price Filter */}
+            <div className="flex items-center space-x-2">
+              <label className="text-sm text-text--text-subtle-light">Price:</label>
+              <Select value={priceFilter} onValueChange={setPriceFilter}>
+                <SelectTrigger className="h-8 text-sm border-gray-300 min-w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Prices</SelectItem>
+                  <SelectItem value="0-50">Under $50</SelectItem>
+                  <SelectItem value="50-100">$50 - $100</SelectItem>
+                  <SelectItem value="100-150">$100 - $150</SelectItem>
+                  <SelectItem value="150">$150 & Above</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex items-center space-x-2">
+              <label className="text-sm text-text--text-subtle-light">Category:</label>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="h-8 text-sm border-gray-300 min-w-[130px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
