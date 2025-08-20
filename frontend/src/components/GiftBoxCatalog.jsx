@@ -334,15 +334,12 @@ const GiftBoxCatalog = () => {
         
         {/* No Results Message */}
         {filteredAndSortedProducts.length === 0 && (
-          <div className="text-center py-16">
-            <div className="mb-4">
-              <Filter className="w-16 h-16 mx-auto text-text--text-subtle-light" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>
+          <div className="text-center py-20">
+            <h3 className="text-lg font-light mb-4" style={{ color: 'var(--text--text-light)' }}>
               No products found
             </h3>
-            <p className="text-text--text-subtle-light mb-6">
-              Try adjusting your filters or browse all our amazing products.
+            <p className="text-text--text-subtle-light mb-8 font-light">
+              Try adjusting your filters or browse all our products.
             </p>
             <Button 
               onClick={() => {
@@ -350,47 +347,18 @@ const GiftBoxCatalog = () => {
                 setPriceFilter('all');
                 setCategoryFilter('all');
               }}
-              style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
+              className="bg-black text-white hover:bg-gray-800 font-light text-sm py-2 px-6 rounded-none"
             >
-              Clear All Filters
+              Clear Filters
             </Button>
           </div>
         )}
 
-        {/* Features Section */}
-        <div className="mt-16 bg-white rounded-lg shadow-lg border border-color--accent--line p-8">
-          <h3 className="text-2xl font-bold text-center mb-8" style={{ color: 'var(--text--text-light)' }}>
-            Why Choose Ottawa Gift Boxes?
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--blue)' }}>
-                <ShoppingCart className="w-6 h-6" style={{ color: 'var(--color--identity--on-blue)' }} />
-              </div>
-              <h4 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Premium Quality</h4>
-              <p className="text-sm text-text--text-subtle-light">
-                Carefully curated gifts from local Ottawa artisans and premium brands
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--yellow)' }}>
-                <Heart className="w-6 h-6" style={{ color: 'var(--color--identity--on-yellow)' }} />
-              </div>
-              <h4 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Personalized Touch</h4>
-              <p className="text-sm text-text--text-subtle-light">
-                Custom gift messages and personalized packaging for every occasion
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color--identity--cyan)' }}>
-                <Search className="w-6 h-6" style={{ color: 'var(--color--identity--on-cyan)' }} />
-              </div>
-              <h4 className="font-semibold mb-2" style={{ color: 'var(--text--text-light)' }}>Fast Delivery</h4>
-              <p className="text-sm text-text--text-subtle-light">
-                Same-day and next-day delivery throughout Ottawa and surrounding areas
-              </p>
-            </div>
-          </div>
+        {/* Minimal Footer */}
+        <div className="text-center py-16 border-t border-gray-100 mt-16">
+          <p className="text-xs font-light text-text--text-subtle-light tracking-wide">
+            © 2025 OTTAWA GIFTS. ALL RIGHTS RESERVED.
+          </p>
         </div>
       </main>
 
