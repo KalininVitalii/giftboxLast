@@ -120,6 +120,13 @@ const GiftBoxCatalog = () => {
 
   const categories = [...new Set(mockProducts.map(product => product.category))];
 
+  // Smooth scroll to top when filters change
+  useEffect(() => {
+    if (sortBy !== 'featured' || priceFilter !== 'all' || categoryFilter !== 'all') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [sortBy, priceFilter, categoryFilter]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
       {/* Header */}
