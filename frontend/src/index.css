@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth Scrolling for the entire site */
+* {
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 /* Custom CSS Variables for the Gift Box Brand */
 :root {
   /* Primary Brand Colors */
