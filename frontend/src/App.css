@@ -3,6 +3,11 @@
   min-height: 100vh;
 }
 
+/* Enhanced smooth scrolling for better performance */
+* {
+  scroll-behavior: smooth;
+}
+
 /* Custom animations for the gift box catalog */
 @keyframes slideInFromLeft {
   from {
@@ -44,13 +49,15 @@
   }
 }
 
-/* Product card hover effects */
+/* Enhanced product card animations */
 .product-card {
   animation: fadeInUp 0.6s ease-out;
+  transition: all 0.3s ease;
 }
 
 .product-card:hover {
-  animation: pulse 0.3s ease-in-out;
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Shopping cart animation */
@@ -91,7 +98,7 @@
   color: var(--text--text-dark);
 }
 
-/* Smooth page transitions */
+/* Enhanced smooth page transitions */
 .page-enter {
   opacity: 0;
   transform: translateY(20px);
@@ -100,7 +107,8 @@
 .page-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page-exit {
@@ -109,5 +117,28 @@
 
 .page-exit-active {
   opacity: 0;
-  transition: opacity 300ms;
+  transition: opacity 300ms ease-out;
+}
+
+/* Smooth scrolling enhancements */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
