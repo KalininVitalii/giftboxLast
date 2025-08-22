@@ -292,10 +292,11 @@ const GiftBoxCatalog = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredAndSortedProducts.map((product) => (
+          {filteredAndSortedProducts.map((product, index) => (
             <Card 
               key={product.id} 
-              className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white border-color--accent--line cursor-pointer"
+              className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white border-color--accent--line cursor-pointer product-card"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               <CardHeader className="p-0 relative overflow-hidden">
                 <div className="aspect-square relative">
@@ -304,6 +305,7 @@ const GiftBoxCatalog = () => {
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     onClick={() => handleProductClick(product.id)}
+                    loading={index > 6 ? "lazy" : "eager"}
                   />
                   {product.originalPrice && (
                     <Badge 
@@ -323,7 +325,7 @@ const GiftBoxCatalog = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={`absolute top-12 right-3 h-8 w-8 p-0 bg-white/90 hover:bg-white ${
+                    className={`absolute top-12 right-3 h-8 w-8 p-0 bg-white/90 hover:bg-white transition-all duration-200 ${
                       wishlist.includes(product.id) ? 'text-red-500' : 'text-gray-600'
                     }`}
                     onClick={(e) => {
@@ -331,7 +333,7 @@ const GiftBoxCatalog = () => {
                       toggleWishlist(product.id);
                     }}
                   >
-                    <Heart className={`h-4 w-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
+                    <Heart className={`h-4 w-4 transition-all duration-200 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
                   </Button>
                   {!product.inStock && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -384,7 +386,7 @@ const GiftBoxCatalog = () => {
                 {/* Action Buttons */}
                 <div className="flex space-x-2">
                   <Button 
-                    className="flex-1"
+                    className="flex-1 transition-all duration-200 hover:scale-105"
                     style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -401,6 +403,7 @@ const GiftBoxCatalog = () => {
                   </Button>
                   <Button 
                     variant="outline" 
+                    className="transition-all duration-200 hover:scale-105"
                     onClick={() => handleProductClick(product.id)}
                   >
                     VIEW
