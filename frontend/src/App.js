@@ -1,19 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import GiftBoxCatalog from "./components/GiftBoxCatalog";
-import ProductPage from "./components/ProductPage";
-import CheckoutPage from "./components/CheckoutPage";
-import ContactPage from "./components/ContactPage";
-import AboutPage from "./components/AboutPage";
-import GiftBasketsPage from "./components/GiftBasketsPage";
-import CorporateGiftsPage from "./components/CorporateGiftsPage";
-import FAQPage from "./components/FAQPage";
-import ShippingPage from "./components/ShippingPage";
-import TrackOrderPage from "./components/TrackOrderPage";
-import ReturnsPage from "./components/ReturnsPage";
 import { Toaster } from "./components/ui/toaster";
 import { CartProvider } from "./components/CartContext";
+
+// Lazy load components for code splitting
+const GiftBoxCatalog = lazy(() => import("./components/GiftBoxCatalog"));
+const ProductPage = lazy(() => import("./components/ProductPage"));
+const CheckoutPage = lazy(() => import("./components/CheckoutPage"));
+const ContactPage = lazy(() => import("./components/ContactPage"));
+const AboutPage = lazy(() => import("./components/AboutPage"));
+const GiftBasketsPage = lazy(() => import("./components/GiftBasketsPage"));
+const CorporateGiftsPage = lazy(() => import("./components/CorporateGiftsPage"));
+const FAQPage = lazy(() => import("./components/FAQPage"));
+const ShippingPage = lazy(() => import("./components/ShippingPage"));
+const TrackOrderPage = lazy(() => import("./components/TrackOrderPage"));
+const ReturnsPage = lazy(() => import("./components/ReturnsPage"));
+
+// Loading component
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent--ui-accent mx-auto mb-4"></div>
+      <p className="text-text--text-light">Loading...</p>
+    </div>
+  </div>
+);
 
 function App() {
   useEffect(() => {
@@ -145,20 +157,22 @@ function App() {
     <CartProvider>
       <div className="App">
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<GiftBoxCatalog />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/gift-baskets" element={<GiftBasketsPage />} />
-            <Route path="/corporate-gifts" element={<CorporateGiftsPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/shipping" element={<ShippingPage />} />
-            <Route path="/track-order" element={<TrackOrderPage />} />
-            <Route path="/returns" element={<ReturnsPage />} />
-            <Route path="/corporate-accounts" element={<CorporateGiftsPage />} />
-          </Routes>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<GiftBoxCatalog />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/gift-baskets" element={<GiftBasketsPage />} />
+              <Route path="/corporate-gifts" element={<CorporateGiftsPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/shipping" element={<ShippingPage />} />
+              <Route path="/track-order" element={<TrackOrderPage />} />
+              <Route path="/returns" element={<ReturnsPage />} />
+              <Route path="/corporate-accounts" element={<CorporateGiftsPage />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
         <Toaster />
       </div>

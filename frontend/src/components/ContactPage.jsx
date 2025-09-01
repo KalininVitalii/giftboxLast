@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Search, User, Menu, X, Heart, Phone, Mail, MapPin, Clock, MessageCircle, HelpCircle, Truck, Gift } from 'lucide-react';
 import { Button } from './ui/button';
@@ -10,6 +10,7 @@ import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { useToast } from '../hooks/use-toast';
 import { useCart } from './CartContext';
+
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -51,6 +52,18 @@ const ContactPage = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  // Optimized navigation handlers
+  const handleNavigateHome = useCallback(() => navigate('/'), [navigate]);
+  const handleNavigateGiftBaskets = useCallback(() => navigate('/gift-baskets'), [navigate]);
+  const handleNavigateCorporateGifts = useCallback(() => navigate('/corporate-gifts'), [navigate]);
+  const handleNavigateAbout = useCallback(() => navigate('/about'), [navigate]);
+  const handleNavigateContact = useCallback(() => navigate('/contact'), [navigate]);
+  
+  // Optimized modal handlers
+  const handleMenuToggle = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,7 +174,7 @@ const ContactPage = () => {
               <h1 
                 className="text-2xl font-bold cursor-pointer" 
                 style={{ color: 'var(--accent--ui-accent)', fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' }}
-                onClick={() => navigate('/')}
+                onClick={handleNavigateHome}
               >
                 Ottawa Gift Boxes
               </h1>
@@ -169,11 +182,11 @@ const ContactPage = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" onClick={() => navigate('/')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Shop</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Gift Baskets</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">Corporate Gifts</a>
-              <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200">About Us</a>
-              <a href="#" className="text-accent--ui-accent font-medium transition-colors duration-200">Contact</a>
+              <button onClick={handleNavigateHome} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Shop</button>
+              <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</button>
+              <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</button>
+              <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</button>
+              <button className="text-accent--ui-accent font-medium transition-colors duration-200">Contact</button>
             </nav>
 
             {/* Header Actions */}
@@ -201,7 +214,7 @@ const ContactPage = () => {
                 variant="ghost"
                 size="sm"
                 className="md:hidden"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={handleMenuToggle}
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
@@ -212,11 +225,11 @@ const ContactPage = () => {
           {isMenuOpen && (
             <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
-                <a href="#" onClick={() => navigate('/')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Shop</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Gift Baskets</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">Corporate Gifts</a>
-                <a href="#" className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2">About Us</a>
-                <a href="#" className="text-accent--ui-accent font-medium transition-colors duration-200 py-2">Contact</a>
+                <button onClick={handleNavigateHome} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Shop</button>
+                <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Gift Baskets</button>
+                <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Corporate Gifts</button>
+                <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">About Us</button>
+                <button className="text-accent--ui-accent font-medium transition-colors duration-200 py-2 text-left w-full">Contact</button>
               </nav>
             </div>
           )}

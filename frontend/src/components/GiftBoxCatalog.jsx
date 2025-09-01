@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart, Search, User, Menu, X, Filter } from 'lucide-react';
 import { Button } from './ui/button';
@@ -9,6 +9,7 @@ import { useToast } from '../hooks/use-toast';
 import { mockProducts } from '../mock';
 import CartModal from './CartModal';
 import { useCart } from './CartContext';
+
 
 const GiftBoxCatalog = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -53,6 +54,29 @@ const GiftBoxCatalog = () => {
     clearCart();
     setIsCartOpen(false);
   };
+
+  // Optimized navigation handlers
+  const handleNavigateHome = useCallback(() => navigate('/'), [navigate]);
+  const handleNavigateGiftBaskets = useCallback(() => navigate('/gift-baskets'), [navigate]);
+  const handleNavigateCorporateGifts = useCallback(() => navigate('/corporate-gifts'), [navigate]);
+  const handleNavigateAbout = useCallback(() => navigate('/about'), [navigate]);
+  const handleNavigateContact = useCallback(() => navigate('/contact'), [navigate]);
+  const handleNavigateShipping = useCallback(() => navigate('/shipping'), [navigate]);
+  const handleNavigateReturns = useCallback(() => navigate('/returns'), [navigate]);
+  const handleNavigateFAQ = useCallback(() => navigate('/faq'), [navigate]);
+  const handleNavigateTrackOrder = useCallback(() => navigate('/track-order'), [navigate]);
+  const handleNavigateCorporateAccounts = useCallback(() => navigate('/corporate-accounts'), [navigate]);
+  
+  // Optimized modal handlers
+  const handleMenuToggle = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
+  const handleCartOpen = useCallback(() => {
+    setIsCartOpen(true);
+  }, []);
+  const handleCartClose = useCallback(() => {
+    setIsCartOpen(false);
+  }, []);
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
@@ -146,11 +170,11 @@ const GiftBoxCatalog = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer font-semibold">Shop</a>
-              <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</a>
-              <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</a>
-              <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</a>
-              <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</a>
+              <button onClick={handleNavigateHome} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer font-semibold">Shop</button>
+              <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</button>
+              <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</button>
+              <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</button>
+              <button onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</button>
             </nav>
 
             {/* Header Actions */}
@@ -173,7 +197,7 @@ const GiftBoxCatalog = () => {
                 variant="ghost" 
                 size="sm" 
                 className="relative"
-                onClick={() => setIsCartOpen(true)}
+                onClick={handleCartOpen}
               >
                 <ShoppingCart className="h-4 w-4" />
                 {getCartItemCount() > 0 && (
@@ -188,7 +212,7 @@ const GiftBoxCatalog = () => {
                 variant="ghost"
                 size="sm"
                 className="md:hidden"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={handleMenuToggle}
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
@@ -199,11 +223,11 @@ const GiftBoxCatalog = () => {
           {isMenuOpen && (
             <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
-                <a href="#" onClick={() => navigate('/')} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold">Shop</a>
-                <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
-                <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Corporate Gifts</a>
-                <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">About Us</a>
-                <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
+                <button onClick={handleNavigateHome} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold text-left w-full">Shop</button>
+                <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Gift Baskets</button>
+                <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Corporate Gifts</button>
+                <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">About Us</button>
+                <button onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Contact</button>
               </nav>
             </div>
           )}
@@ -506,21 +530,21 @@ const GiftBoxCatalog = () => {
             <div>
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" onClick={() => navigate('/')} className="hover:text-white transition-colors cursor-pointer">Gift Boxes</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Corporate Gifts</a></li>
-                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Same-Day Delivery</a></li>
-                <li><a href="#" onClick={() => navigate('/shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping Information</a></li>
-                <li><a href="#" onClick={() => navigate('/returns')} className="hover:text-white transition-colors cursor-pointer">Returns & Exchanges</a></li>
+                <li><button onClick={handleNavigateHome} className="hover:text-white transition-colors cursor-pointer text-left w-full">Gift Boxes</button></li>
+                <li><button onClick={handleNavigateCorporateGifts} className="hover:text-white transition-colors cursor-pointer text-left w-full">Corporate Gifts</button></li>
+                <li><button onClick={handleNavigateShipping} className="hover:text-white transition-colors cursor-pointer text-left w-full">Same-Day Delivery</button></li>
+                <li><button onClick={handleNavigateShipping} className="hover:text-white transition-colors cursor-pointer text-left w-full">Shipping Information</button></li>
+                <li><button onClick={handleNavigateReturns} className="hover:text-white transition-colors cursor-pointer text-left w-full">Returns & Exchanges</button></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
               <ul className="space-y-2 text-text--text-subtle-dark">
-                <li><a href="#" onClick={() => navigate('/contact')} className="hover:text-white transition-colors cursor-pointer">Contact Us</a></li>
-                <li><a href="#" onClick={() => navigate('/faq')} className="hover:text-white transition-colors cursor-pointer">FAQ</a></li>
-                <li><a href="#" onClick={() => navigate('/track-order')} className="hover:text-white transition-colors cursor-pointer">Track Your Order</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-accounts')} className="hover:text-white transition-colors cursor-pointer">Corporate Accounts</a></li>
-                <li><a href="#" onClick={() => navigate('/corporate-gifts')} className="hover:text-white transition-colors cursor-pointer">Bulk Orders</a></li>
+                <li><button onClick={handleNavigateContact} className="hover:text-white transition-colors cursor-pointer text-left w-full">Contact Us</button></li>
+                <li><button onClick={handleNavigateFAQ} className="hover:text-white transition-colors cursor-pointer text-left w-full">FAQ</button></li>
+                <li><button onClick={handleNavigateTrackOrder} className="hover:text-white transition-colors cursor-pointer text-left w-full">Track Your Order</button></li>
+                <li><button onClick={handleNavigateCorporateAccounts} className="hover:text-white transition-colors cursor-pointer text-left w-full">Corporate Accounts</button></li>
+                <li><button onClick={handleNavigateCorporateGifts} className="hover:text-white transition-colors cursor-pointer text-left w-full">Bulk Orders</button></li>
               </ul>
             </div>
             <div>
@@ -542,7 +566,7 @@ const GiftBoxCatalog = () => {
       {/* Cart Modal */}
       <CartModal 
         isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
+        onClose={handleCartClose}
         cartItems={cart}
         updateQuantity={updateQuantity}
         removeFromCart={removeFromCart}

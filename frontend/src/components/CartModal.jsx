@@ -1,224 +1,187 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { X, Plus, Minus, Trash2 } from 'lucide-react';
+import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import { optimizedClick, batchStateUpdates, monitorEventPerformance } from '../lib/eventHandlers';
 
-const CartModal = ({ 
-  isOpen, 
-  onClose, 
-  cartItems, 
-  updateQuantity, 
-  removeFromCart, 
-  onCheckout 
-}) => {
-  const navigate = useNavigate();
-
+const CartModal = ({ isOpen, onClose, cartItems, updateQuantity, removeFromCart, onCheckout }) => {
   if (!isOpen) return null;
 
-  const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.13; // 13% HST for Ontario
-  const grandTotal = subtotal + tax;
+  // Optimized event handlers
+  const handleClose = optimizedClick(onClose);
+  
+  const handleRemoveItem = (itemId) => {
+    return optimizedClick(() => {
+      removeFromCart(itemId);
+    });
+  };
 
-  const handleCheckout = () => {
-    onClose();
-    navigate('/checkout');
+  const handleDecreaseQuantity = (itemId, currentQuantity) => {
+    return optimizedClick(() => {
+      if (currentQuantity > 1) {
+        updateQuantity(itemId, currentQuantity - 1);
+      }
+    });
+  };
+
+  const handleIncreaseQuantity = (itemId, currentQuantity) => {
+    return optimizedClick(() => {
+      updateQuantity(itemId, currentQuantity + 1);
+    });
+  };
+
+  const handleCheckoutClick = optimizedClick(() => {
+    // Batch state updates for better performance
+    batchStateUpdates([
+      () => onCheckout(),
+      () => onClose()
+    ])();
+  });
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  };
+
+  const calculateTax = () => {
+    return calculateSubtotal() * 0.13;
+  };
+
+  const calculateTotal = () => {
+    return calculateSubtotal() + calculateTax();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-      <div className="bg-white w-full max-w-md h-full overflow-y-auto shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={handleClose}
+      />
+      
+      {/* Modal */}
+      <div className="relative w-full max-w-2xl mx-4 bg-white rounded-lg shadow-xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-color--accent--line p-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold" style={{ color: 'var(--text--text-light)' }}>
-            Your Cart
-          </h2>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="h-5 w-5" />
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold">Shopping Cart</h2>
+          <Button variant="ghost" size="sm" onClick={handleClose}>
+            <X className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* Cart Items */}
-        <div className="p-4">
+        {/* Content */}
+        <div className="p-6 overflow-y-auto max-h-[60vh]">
           {cartItems.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium text-text--text-light mb-2">Your cart is empty</h3>
-              <p className="text-text--text-subtle-light mb-4">Add some beautiful gift boxes to get started!</p>
-              <Button 
-                onClick={onClose}
-                style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
-              >
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">Your cart is empty</p>
+              <Button onClick={handleClose}>
                 Continue Shopping
               </Button>
             </div>
           ) : (
-            <>
-              <div className="mb-4">
-                <Badge variant="outline" className="text-sm">
-                  {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'}
-                </Badge>
-              </div>
-
-              <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <Card key={item.id} className="border-color--accent--line">
-                    <CardContent className="p-4">
-                      <div className="flex space-x-4">
-                        {/* Product Image */}
-                        <div className="w-20 h-20 flex-shrink-0">
-                          <img 
-                            src={item.images[0]} 
-                            alt={item.name}
-                            className="w-full h-full object-cover rounded-lg"
-                          />
-                        </div>
-
-                        {/* Product Details */}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-sm text-text--text-light mb-1 truncate">
-                            {item.name}
-                          </h3>
-                          <p className="text-xs text-text--text-subtle-light mb-2">
-                            {item.deliveryDate || '2025 Jan 2nd'}
-                          </p>
-                          
-                          {/* Price and Quantity */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <span className="font-bold text-sm" style={{ color: 'var(--accent--ui-accent)' }}>
-                                {item.quantity} × ${item.price.toFixed(2)}
-                              </span>
-                            </div>
-                            
-                            {/* Remove Button */}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeFromCart(item.id)}
-                              className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-
-                          {/* Quantity Controls */}
-                          <div className="flex items-center justify-between mt-3">
-                            <span className="text-xs text-text--text-subtle-light">Quantity:</span>
-                            <div className="flex items-center space-x-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                className="h-8 w-8 p-0"
-                                disabled={item.quantity <= 1}
-                              >
-                                <Minus className="h-3 w-3" />
-                              </Button>
-                              
-                              <span className="w-8 text-center text-sm font-medium">
-                                {item.quantity}
-                              </span>
-                              
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="h-8 w-8 p-0"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Cart Summary */}
-              <div className="mt-6 space-y-4">
-                <Card className="border-color--accent--line">
+            <div className="space-y-4">
+              {cartItems.map((item) => (
+                <Card key={item.id} className="border border-gray-200">
                   <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-text--text-subtle-light">Subtotal:</span>
-                        <span className="font-medium" style={{ color: 'var(--text--text-light)' }}>
-                          ${subtotal.toFixed(2)}
-                        </span>
+                    <div className="flex items-center space-x-4">
+                      {/* Product Image */}
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={item.images?.[0] || '/placeholder-image.jpg'} 
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
                       </div>
                       
-                      <div className="flex justify-between text-sm">
-                        <span className="text-text--text-subtle-light">HST (13%):</span>
-                        <span className="font-medium" style={{ color: 'var(--text--text-light)' }}>
-                          ${tax.toFixed(2)}
-                        </span>
+                      {/* Product Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
+                        <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                        {item.deliveryDate && (
+                          <p className="text-xs text-gray-400">Delivery: {item.deliveryDate}</p>
+                        )}
+                        {item.giftMessage && (
+                          <p className="text-xs text-gray-400">Message: {item.giftMessage.substring(0, 30)}...</p>
+                        )}
                       </div>
                       
-                      <div className="border-t border-color--accent--line pt-3">
-                        <div className="flex justify-between">
-                          <span className="font-bold text-lg" style={{ color: 'var(--text--text-light)' }}>
-                            Grand Total:
-                          </span>
-                          <span className="font-bold text-lg" style={{ color: 'var(--accent--ui-accent)' }}>
-                            ${grandTotal.toFixed(2)}
-                          </span>
-                        </div>
+                      {/* Quantity Controls */}
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleDecreaseQuantity(item.id, item.quantity)}
+                          disabled={item.quantity <= 1}
+                        >
+                          <Minus className="h-3 w-3" />
+                        </Button>
+                        
+                        <span className="w-8 text-center text-sm font-medium">
+                          {item.quantity}
+                        </span>
+                        
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleIncreaseQuantity(item.id, item.quantity)}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
                       </div>
+                      
+                      {/* Remove Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRemoveItem(item.id)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
-
-                {/* Action Buttons */}
-                <div className="space-y-3">
-                  <Button 
-                    className="w-full py-3 text-lg font-semibold transition-all duration-200 transform hover:scale-105"
-                    style={{ 
-                      backgroundColor: 'var(--color--identity--red)',
-                      color: 'var(--text--text-dark)'
-                    }}
-                    onClick={handleCheckout}
-                  >
-                    CHECKOUT
-                  </Button>
-                  
-                  <Button 
-                    variant="outline"
-                    className="w-full py-3 text-lg font-semibold"
-                    onClick={onClose}
-                    style={{ 
-                      borderColor: 'var(--accent--ui-accent)',
-                      color: 'var(--accent--ui-accent)'
-                    }}
-                  >
-                    CONTINUE SHOPPING
-                  </Button>
-                </div>
-
-                {/* Delivery Info */}
-                <Card className="bg-color--accent--coconut border-color--accent--line">
-                  <CardContent className="p-4">
-                    <div className="text-center">
-                      <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--text--text-light)' }}>
-                        🚚 Free Delivery Available
-                      </h4>
-                      <p className="text-xs text-text--text-subtle-light">
-                        Free delivery on orders over $100 throughout Ottawa and surrounding areas. 
-                        Same-day delivery available for orders placed before 2 PM.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </>
+              ))}
+            </div>
           )}
         </div>
+
+        {/* Footer */}
+        {cartItems.length > 0 && (
+          <div className="p-6 border-t border-gray-200 bg-gray-50">
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span>Subtotal:</span>
+                <span>${calculateSubtotal().toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>HST (13%):</span>
+                <span>${calculateTax().toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-lg font-semibold">
+                <span>Total:</span>
+                <span>${calculateTotal().toFixed(2)}</span>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-3">
+              <Button 
+                className="w-full py-3 text-lg font-semibold"
+                onClick={handleCheckoutClick}
+              >
+                Proceed to Checkout
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleClose}
+              >
+                Continue Shopping
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

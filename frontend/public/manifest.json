@@ -1,0 +1,19 @@
+{
+  "short_name": "Ottawa Gift Boxes",
+  "name": "Ottawa Gift Boxes - Premium Gift Baskets & Boxes",
+  "description": "Premium gift boxes and baskets delivered throughout Ottawa, Ontario",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#61525a",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-CA"
+}

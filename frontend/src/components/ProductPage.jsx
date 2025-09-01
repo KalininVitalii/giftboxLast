@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Star, ChevronLeft, ChevronRight, Calendar, MessageSquare, Package, ShoppingCart, Search, User, Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
@@ -11,6 +11,12 @@ import { mockProducts, mockReviews } from '../mock';
 import { useCart } from './CartContext';
 import CartModal from './CartModal';
 import { StarRating, ReviewForm, ReviewsList, ReviewSummary } from './ReviewSystem';
+import { 
+  optimizedClick, 
+  optimizedImageLoad,
+  batchStateUpdates,
+  monitorEventPerformance 
+} from '../lib/eventHandlers';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -47,7 +53,8 @@ const ProductPage = () => {
     }
   }, [id]);
 
-  const toggleWishlist = (productId) => {
+  // Optimized event handlers using useCallback and performance monitoring
+  const toggleWishlist = useCallback(monitorEventPerformance('toggleWishlist', (productId) => {
     if (wishlist.includes(productId)) {
       setWishlist(wishlist.filter(id => id !== productId));
       toast({
@@ -63,9 +70,9 @@ const ProductPage = () => {
         variant: "default",
       });
     }
-  };
+  }), [wishlist, toast]);
 
-  const handleCheckout = () => {
+  const handleCheckout = useCallback(monitorEventPerformance('handleCheckout', () => {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const tax = subtotal * 0.13;
     const grandTotal = subtotal + tax;
@@ -76,32 +83,35 @@ const ProductPage = () => {
       variant: "default",
     });
     
-    clearCart();
-    setIsCartOpen(false);
-  };
+    // Batch state updates for better performance
+    batchStateUpdates([
+      () => clearCart(),
+      () => setIsCartOpen(false)
+    ])();
+  }), [cart, clearCart, toast]);
 
-  const nextImage = () => {
+  const nextImage = useCallback(monitorEventPerformance('nextImage', () => {
     if (product) {
       setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
     }
-  };
+  }), [product]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(monitorEventPerformance('prevImage', () => {
     if (product) {
       setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
     }
-  };
+  }), [product]);
 
-  const getOrdinalSuffix = (day) => {
+  const getOrdinalSuffix = useCallback((day) => {
     const j = day % 10;
     const k = day % 100;
     if (j === 1 && k !== 11) return 'st';
     if (j === 2 && k !== 12) return 'nd';
     if (j === 3 && k !== 13) return 'rd';
     return 'th';
-  };
+  }, []);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(monitorEventPerformance('handleAddToCart', () => {
     if (!product) return;
     
     const deliveryDate = `${selectedYear} ${selectedMonth} ${selectedDay}${getOrdinalSuffix(selectedDay)}`;
@@ -113,18 +123,18 @@ const ProductPage = () => {
       description: `${product.name} (Qty: ${quantity}) has been added to your cart.`,
       variant: "default",
     });
-  };
+  }), [product, selectedYear, selectedMonth, selectedDay, quantity, giftMessage, addToCart, getOrdinalSuffix, toast]);
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = useCallback(monitorEventPerformance('handleAddToWishlist', () => {
     setIsWishlisted(!isWishlisted);
     toast({
       title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist! 💖",
       description: isWishlisted ? "Item removed from your wishlist." : "Item added to your wishlist.",
       variant: "default",
     });
-  };
+  }), [isWishlisted, toast]);
 
-  const handleBuyNow = () => {
+  const handleBuyNow = useCallback(monitorEventPerformance('handleBuyNow', () => {
     const deliveryDate = `${selectedYear} ${selectedMonth} ${selectedDay}${getOrdinalSuffix(selectedDay)}`;
     
     // Add to cart first
@@ -141,17 +151,17 @@ const ProductPage = () => {
     setTimeout(() => {
       navigate('/', { replace: true });
     }, 3000);
-  };
+  }), [product, selectedYear, selectedMonth, selectedDay, quantity, giftMessage, addToCart, getOrdinalSuffix, toast, navigate]);
 
-  const handleReviewSubmit = (newReview) => {
+  const handleReviewSubmit = useCallback(monitorEventPerformance('handleReviewSubmit', (newReview) => {
     setReviews(prev => [newReview, ...prev]);
     // Update product rating
     const allReviews = [newReview, ...reviews];
     const avgRating = allReviews.reduce((sum, review) => sum + review.rating, 0) / allReviews.length;
     setProduct(prev => ({ ...prev, rating: avgRating, totalReviews: allReviews.length }));
-  };
+  }), [reviews]);
 
-  const handleHelpfulClick = (reviewId, isHelpful) => {
+  const handleHelpfulClick = useCallback(monitorEventPerformance('handleHelpfulClick', (reviewId, isHelpful) => {
     setReviews(prev => prev.map(review => 
       review.id === reviewId 
         ? { 
@@ -160,14 +170,37 @@ const ProductPage = () => {
           }
         : review
     ));
-  };
+  }), []);
+
+  // Optimized navigation handlers
+  const handleNavigateHome = useCallback(() => navigate('/'), [navigate]);
+  const handleNavigateGiftBaskets = useCallback(() => navigate('/gift-baskets'), [navigate]);
+  const handleNavigateCorporateGifts = useCallback(() => navigate('/corporate-gifts'), [navigate]);
+  const handleNavigateAbout = useCallback(() => navigate('/about'), [navigate]);
+  const handleNavigateContact = useCallback(() => navigate('/contact'), [navigate]);
+
+  // Optimized modal handlers
+  const handleCartOpen = useCallback(() => {
+    setIsCartOpen(true);
+  }, []);
+  const handleCartClose = useCallback(() => {
+    setIsCartOpen(false);
+  }, []);
+  const handleMenuToggle = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
+
+  // Optimized image navigation
+  const handleImageChange = useCallback(monitorEventPerformance('handleImageChange', (index) => {
+    setCurrentImageIndex(index);
+  }), []);
 
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-semibold text-text--text-light mb-4">Product not found</h2>
-          <Button onClick={() => navigate('/')} style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}>
+          <Button onClick={handleNavigateHome} style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Catalog
           </Button>
@@ -191,7 +224,7 @@ const ProductPage = () => {
               <h1 
                 className="text-2xl font-bold cursor-pointer" 
                 style={{ color: 'var(--accent--ui-accent)', fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' }}
-                onClick={() => navigate('/')}
+                onClick={handleNavigateHome}
               >
                 Ottawa Gift Boxes
               </h1>
@@ -199,11 +232,11 @@ const ProductPage = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" onClick={() => navigate('/')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Shop</a>
-              <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</a>
-              <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</a>
-              <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</a>
-              <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</a>
+              <a href="#" onClick={handleNavigateHome} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Shop</a>
+              <a href="#" onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</a>
+              <a href="#" onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</a>
+              <a href="#" onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</a>
+              <a href="#" onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</a>
             </nav>
 
             {/* Header Actions */}
@@ -215,7 +248,7 @@ const ProductPage = () => {
                 variant="ghost" 
                 size="sm" 
                 className="relative"
-                onClick={() => setWishlist([])}
+                onClick={optimizedClick(() => setWishlist([]))}
               >
                 <Heart className={`h-4 w-4 ${wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
                 {wishlist.length > 0 && (
@@ -231,7 +264,7 @@ const ProductPage = () => {
                 variant="ghost" 
                 size="sm" 
                 className="relative"
-                onClick={() => setIsCartOpen(true)}
+                onClick={handleCartOpen}
               >
                 <ShoppingCart className="h-4 w-4" />
                 {getCartItemCount() > 0 && (
@@ -246,7 +279,7 @@ const ProductPage = () => {
                 variant="ghost"
                 size="sm"
                 className="md:hidden"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={handleMenuToggle}
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
@@ -257,11 +290,11 @@ const ProductPage = () => {
           {isMenuOpen && (
             <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
-                <a href="#" onClick={() => navigate('/')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Shop</a>
-                <a href="#" onClick={() => navigate('/gift-baskets')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
-                <a href="#" onClick={() => navigate('/corporate-gifts')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Corporate Gifts</a>
-                <a href="#" onClick={() => navigate('/about')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">About Us</a>
-                <a href="#" onClick={() => navigate('/contact')} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
+                <a href="#" onClick={handleNavigateHome} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Shop</a>
+                <a href="#" onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Gift Baskets</a>
+                <a href="#" onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Corporate Gifts</a>
+                <a href="#" onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">About Us</a>
+                <a href="#" onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer">Contact</a>
               </nav>
             </div>
           )}
@@ -272,7 +305,7 @@ const ProductPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center space-x-2 text-sm text-text--text-subtle-light">
           <button 
-            onClick={() => navigate('/')}
+            onClick={handleNavigateHome}
             className="hover:text-accent--ui-accent transition-colors duration-200"
           >
             Shop
@@ -292,6 +325,7 @@ const ProductPage = () => {
                 src={product.images[currentImageIndex]} 
                 alt={`${product.name} - Image ${currentImageIndex + 1}`}
                 className="w-full h-full object-cover"
+                onLoad={optimizedImageLoad(() => {})}
               />
               {product.images.length > 1 && (
                 <>
@@ -320,7 +354,7 @@ const ProductPage = () => {
                         className={`w-2 h-2 rounded-full transition-colors ${
                           index === currentImageIndex ? 'bg-white' : 'bg-white/50'
                         }`}
-                        onClick={() => setCurrentImageIndex(index)}
+                        onClick={optimizedClick(() => handleImageChange(index))}
                       />
                     ))}
                   </div>
@@ -348,12 +382,13 @@ const ProductPage = () => {
                         ? 'border-accent--ui-accent' 
                         : 'border-color--accent--line hover:border-accent--ui-accent'
                     }`}
-                    onClick={() => setCurrentImageIndex(index)}
+                    onClick={optimizedClick(() => handleImageChange(index))}
                   >
                     <img 
                       src={image} 
                       alt={`${product.name} thumbnail ${index + 1}`}
                       className="w-full h-full object-cover"
+                      onLoad={optimizedImageLoad(() => {})}
                     />
                   </button>
                 ))}
@@ -410,62 +445,6 @@ const ProductPage = () => {
                 {product.description}
               </p>
             </div>
-
-            {/* Delivery Date Selection */}
-            <Card className="border-color--accent--line">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Calendar className="w-5 h-5 text-accent--ui-accent" />
-                  <h3 className="font-semibold" style={{ color: 'var(--text--text-light)' }}>
-                    Requested Delivery Date (Monday-Friday): *
-                  </h3>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Jan">Jan</SelectItem>
-                      <SelectItem value="Feb">Feb</SelectItem>
-                      <SelectItem value="Mar">Mar</SelectItem>
-                      <SelectItem value="Apr">Apr</SelectItem>
-                      <SelectItem value="May">May</SelectItem>
-                      <SelectItem value="Jun">Jun</SelectItem>
-                      <SelectItem value="Jul">Jul</SelectItem>
-                      <SelectItem value="Aug">Aug</SelectItem>
-                      <SelectItem value="Sep">Sep</SelectItem>
-                      <SelectItem value="Oct">Oct</SelectItem>
-                      <SelectItem value="Nov">Nov</SelectItem>
-                      <SelectItem value="Dec">Dec</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Select value={selectedDay} onValueChange={setSelectedDay}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 31 }, (_, i) => (
-                        <SelectItem key={i + 1} value={String(i + 1)}>
-                          {i + 1}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  
-                  <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="2025">2025</SelectItem>
-                      <SelectItem value="2026">2026</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Gift Message */}
             <Card className="border-color--accent--line">
@@ -566,7 +545,7 @@ const ProductPage = () => {
         <div className="border-b border-color--accent--line mb-8">
           <nav className="flex space-x-8">
             <button
-              onClick={() => setActiveTab('details')}
+              onClick={optimizedClick(() => setActiveTab('details'))}
               className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'details'
                   ? 'border-accent--ui-accent text-accent--ui-accent'
@@ -576,7 +555,7 @@ const ProductPage = () => {
               Product Details
             </button>
             <button
-              onClick={() => setActiveTab('reviews')}
+              onClick={optimizedClick(() => setActiveTab('reviews'))}
               className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'reviews'
                   ? 'border-accent--ui-accent text-accent--ui-accent'
@@ -586,7 +565,7 @@ const ProductPage = () => {
               Reviews ({reviews.length})
             </button>
             <button
-              onClick={() => setActiveTab('write-review')}
+              onClick={optimizedClick(() => setActiveTab('write-review'))}
               className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'write-review'
                   ? 'border-accent--ui-accent text-accent--ui-accent'
@@ -659,7 +638,7 @@ const ProductPage = () => {
       {/* Cart Modal */}
       <CartModal 
         isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
+        onClose={handleCartClose}
         cartItems={cart}
         updateQuantity={updateQuantity}
         removeFromCart={removeFromCart}
