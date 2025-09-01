@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ShoppingCart, CreditCard, Truck, Shield, Lock, AlertCircle } from 'lucide-react';
 import { Button } from './ui/button';
@@ -16,6 +16,14 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { cart, clearCart, getCartItemCount } = useCart();
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('CheckoutPage mounted');
+    console.log('Cart:', cart);
+    console.log('Cart length:', cart.length);
+    console.log('Cart item count:', getCartItemCount());
+  }, [cart, getCartItemCount]);
   
   // Form states
   const [formData, setFormData] = useState({
@@ -135,15 +143,15 @@ const CheckoutPage = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <div className="mb-8">
             <ShoppingCart className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-            <h2 className="text-2xl font-bold text-text--text-light mb-4">Your cart is empty</h2>
-            <p className="text-text--text-subtle-light mb-8">Add some beautiful gift boxes to get started!</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Your cart is empty</h2>
+            <p className="text-gray-600 mb-8">Add some beautiful gift boxes to get started!</p>
             <Button 
               onClick={() => navigate('/')}
-              style={{ backgroundColor: 'var(--accent--ui-accent)', color: 'var(--text--text-dark)' }}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
             >
               Continue Shopping
             </Button>
@@ -154,35 +162,35 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-color--accent--coconut to-white">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       {/* Header */}
-      <header className="bg-white border-b border-color--accent--line">
+      <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Button 
                 variant="ghost" 
                 onClick={() => navigate('/')}
-                className="text-text--base hover:text-accent--ui-accent"
+                                 className="text-gray-700 hover:text-orange-500"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Shop
               </Button>
-              <div className="h-6 w-px bg-color--accent--line"></div>
-              <h1 className="text-2xl font-bold" style={{ color: 'var(--accent--ui-accent)', fontFamily: 'Dbsharpgroteskvariable Vf, Arial, sans-serif' }}>
+              <div className="h-6 w-px bg-gray-200"></div>
+              <h1 className="text-2xl font-bold text-orange-500 font-sans">
                 Ottawa Gift Boxes
               </h1>
             </div>
             <div className="flex items-center space-x-2">
               <Lock className="w-4 h-4 text-green-600" />
-              <span className="text-sm text-text--text-subtle-light">Secure Checkout</span>
+              <span className="text-sm text-gray-600">Secure Checkout</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* Checkout Progress */}
-      <div className="bg-white border-b border-color--accent--line">
+      <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-center space-x-8">
             <div className="flex items-center space-x-2">
@@ -191,8 +199,8 @@ const CheckoutPage = () => {
             </div>
             <div className="w-16 h-px bg-green-600"></div>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full bg-accent--ui-accent text-white flex items-center justify-center text-sm">2</div>
-              <span className="text-sm font-medium" style={{ color: 'var(--accent--ui-accent)' }}>Checkout</span>
+              <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm">2</div>
+              <span className="text-sm font-medium text-orange-500">Checkout</span>
             </div>
             <div className="w-16 h-px bg-gray-300"></div>
             <div className="flex items-center space-x-2">
@@ -479,7 +487,7 @@ const CheckoutPage = () => {
                         className={errors.termsAccepted ? 'border-red-500' : ''}
                       />
                       <Label htmlFor="termsAccepted" className="text-sm">
-                        I accept the <a href="#" className="text-accent--ui-accent underline">Terms of Service</a> and <a href="#" className="text-accent--ui-accent underline">Privacy Policy</a> *
+                        I accept the <a href="#" className="text-orange-500 underline">Terms of Service</a> and <a href="#" className="text-orange-500 underline">Privacy Policy</a> *
                       </Label>
                     </div>
                     {errors.termsAccepted && <p className="text-red-500 text-xs">{errors.termsAccepted}</p>}
@@ -502,7 +510,7 @@ const CheckoutPage = () => {
                 {/* Cart Items */}
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {cart.map((item) => (
-                    <div key={item.id} className="flex space-x-3 py-3 border-b border-color--accent--line last:border-b-0">
+                    <div key={item.id} className="flex space-x-3 py-3 border-b border-gray-200 last:border-b-0">
                       <img 
                         src={item.images[0]} 
                         alt={item.name}
@@ -510,12 +518,12 @@ const CheckoutPage = () => {
                       />
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                        <p className="text-xs text-text--text-subtle-light">
-                          Delivery: {item.deliveryDate}
-                        </p>
-                        <p className="text-xs text-text--text-subtle-light">
-                          Qty: {item.quantity}
-                        </p>
+                                                 <p className="text-xs text-gray-600">
+                           Delivery: {item.deliveryDate}
+                         </p>
+                         <p className="text-xs text-gray-600">
+                           Qty: {item.quantity}
+                         </p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
@@ -527,7 +535,7 @@ const CheckoutPage = () => {
                 </div>
 
                 {/* Order Totals */}
-                <div className="space-y-2 pt-4 border-t border-color--accent--line">
+                <div className="space-y-2 pt-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal:</span>
                     <span>${subtotal.toFixed(2)}</span>
@@ -543,9 +551,9 @@ const CheckoutPage = () => {
                     <span>HST (13%):</span>
                     <span>${hst.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-lg font-bold pt-2 border-t border-color--accent--line">
+                  <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
                     <span>Total:</span>
-                    <span style={{ color: 'var(--accent--ui-accent)' }}>${total.toFixed(2)}</span>
+                    <span className="text-orange-500">${total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -575,14 +583,14 @@ const CheckoutPage = () => {
                 </Button>
 
                 {/* Security Info */}
-                <div className="bg-color--accent--coconut p-3 rounded-lg text-center">
+                <div className="bg-orange-50 p-3 rounded-lg text-center">
                   <div className="flex items-center justify-center space-x-2 mb-2">
                     <Shield className="w-4 h-4 text-green-600" />
                     <span className="text-sm font-medium text-green-600">Secure Payment</span>
                   </div>
-                  <p className="text-xs text-text--text-subtle-light">
-                    Your payment information is encrypted and secure. We never store your credit card details.
-                  </p>
+                                     <p className="text-xs text-gray-600">
+                     Your payment information is encrypted and secure. We never store your credit card details.
+                   </p>
                 </div>
 
                 {/* Delivery Info */}

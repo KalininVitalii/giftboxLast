@@ -17,18 +17,8 @@ const ShippingPage = () => {
   const { cart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart();
 
   const handleCheckout = () => {
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.13;
-    const grandTotal = subtotal + tax;
-    
-    toast({
-      title: "Order Placed Successfully! 🎉",
-      description: `Thank you! Your order totaling $${grandTotal.toFixed(2)} has been placed. You'll receive a confirmation email shortly.`,
-      variant: "default",
-    });
-    
-    clearCart();
     setIsCartOpen(false);
+    navigate('/checkout');
   };
 
   return (
