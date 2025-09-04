@@ -47,7 +47,6 @@ const GiftBoxCatalog = () => {
 
   // Optimized navigation handlers
   const handleNavigateHome = useCallback(() => navigate('/'), [navigate]);
-  const handleNavigateGiftBaskets = useCallback(() => navigate('/gift-baskets'), [navigate]);
   const handleNavigateCorporateGifts = useCallback(() => navigate('/corporate-gifts'), [navigate]);
   const handleNavigateAbout = useCallback(() => navigate('/about'), [navigate]);
   const handleNavigateContact = useCallback(() => navigate('/contact'), [navigate]);
@@ -161,7 +160,6 @@ const GiftBoxCatalog = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
               <button onClick={handleNavigateHome} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer font-semibold">Shop</button>
-              <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Gift Baskets</button>
               <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Corporate Gifts</button>
               <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">About Us</button>
               <button onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 cursor-pointer">Contact</button>
@@ -214,7 +212,6 @@ const GiftBoxCatalog = () => {
             <div className="md:hidden py-4 border-t border-color--accent--line">
               <nav className="flex flex-col space-y-2">
                 <button onClick={handleNavigateHome} className="text-accent--ui-accent hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer font-semibold text-left w-full">Shop</button>
-                <button onClick={handleNavigateGiftBaskets} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Gift Baskets</button>
                 <button onClick={handleNavigateCorporateGifts} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Corporate Gifts</button>
                 <button onClick={handleNavigateAbout} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">About Us</button>
                 <button onClick={handleNavigateContact} className="text-text--base hover:text-accent--ui-accent transition-colors duration-200 py-2 cursor-pointer text-left w-full">Contact</button>

@@ -10,7 +10,7 @@ const ProductPage = lazy(() => import("./components/ProductPage"));
 const CheckoutPage = lazy(() => import("./components/CheckoutPage"));
 const ContactPage = lazy(() => import("./components/ContactPage"));
 const AboutPage = lazy(() => import("./components/AboutPage"));
-const GiftBasketsPage = lazy(() => import("./components/GiftBasketsPage"));
+
 const CorporateGiftsPage = lazy(() => import("./components/CorporateGiftsPage"));
 const FAQPage = lazy(() => import("./components/FAQPage"));
 const ShippingPage = lazy(() => import("./components/ShippingPage"));
@@ -164,7 +164,7 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/gift-baskets" element={<GiftBasketsPage />} />
+
               <Route path="/corporate-gifts" element={<CorporateGiftsPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/shipping" element={<ShippingPage />} />

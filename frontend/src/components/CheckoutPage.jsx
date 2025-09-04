@@ -519,11 +519,11 @@ const CheckoutPage = () => {
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium text-sm truncate">{item.name}</h4>
                                                  <p className="text-xs text-gray-600">
-                           Delivery: {item.deliveryDate}
-                         </p>
+                          Delivery: {item.deliveryDate}
+                        </p>
                          <p className="text-xs text-gray-600">
-                           Qty: {item.quantity}
-                         </p>
+                          Qty: {item.quantity}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
@@ -589,8 +589,8 @@ const CheckoutPage = () => {
                     <span className="text-sm font-medium text-green-600">Secure Payment</span>
                   </div>
                                      <p className="text-xs text-gray-600">
-                     Your payment information is encrypted and secure. We never store your credit card details.
-                   </p>
+                    Your payment information is encrypted and secure. We never store your credit card details.
+                  </p>
                 </div>
 
                 {/* Delivery Info */}
